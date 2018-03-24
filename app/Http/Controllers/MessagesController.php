@@ -32,11 +32,12 @@ class MessagesController extends Controller
      */
     public function create()
     {
-        $message = new Message;
-        
-        return view('message.cleate',[
+            
+            $message = new Message;
+
+        return view('messages.create', [
             'message' => $message,
-            ]);
+        ]);
     }
 
     /**
@@ -47,6 +48,10 @@ class MessagesController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'content' => 'required|max:255',
+        ]);
+        
         $message = new Message;
         $message->content = $request->content;
         $message->save();
@@ -62,6 +67,7 @@ class MessagesController extends Controller
      */
     public function show($id)
     {
+        
         $message = Message::find($id);
 
         return view('messages.show', [
@@ -93,7 +99,11 @@ class MessagesController extends Controller
      */
     public function update(Request $request, $id)
     {
-    $message = Message::find($id);
+        $this->validate($request, [
+            'content' => 'required|max:255',
+        ]);
+        
+        $message = Message::find($id);
         $message->content = $request->content;
         $message->save();
 
